@@ -42,14 +42,14 @@ function Dashboard(){
     }
 
     const reconcileTransactions = ()=>{
-        if(internalFileData.length == 0 || providerFileData.length == 0){
+        if(internalFileData.length === 0 || providerFileData.length === 0){
             window.alert("Give 2 CSV files to Reconcile")            
         }else{
             //transactions that appear in both the internal system export file
             //and the provider statement file
             const both = internalFileData.filter((obj1)=>{
                 return providerFileData.find((obj2)=>{
-                    return obj1.transaction_reference == obj2.transaction_reference
+                    return obj1.transaction_reference === obj2.transaction_reference
                 })
             })
 
@@ -58,7 +58,7 @@ function Dashboard(){
             //transactions that appear only in the internal system export file
             const internal = internalFileData.filter((obj1)=>{
                 return !both.find((obj2)=>{
-                    return obj1.transaction_reference == obj2.transaction_reference
+                    return obj1.transaction_reference === obj2.transaction_reference
                 })
             })
             setInternalOnlyTransactions(internal)
@@ -66,7 +66,7 @@ function Dashboard(){
              //transactions that appear only in the provider statement file
             const provider = providerFileData.filter((obj1)=>{
                 return !both.find((obj2)=>{
-                    return obj1.transaction_reference == obj2.transaction_reference
+                    return obj1.transaction_reference === obj2.transaction_reference
                 })
             })
             setProviderOnlyTransactions(provider)
@@ -85,7 +85,7 @@ function Dashboard(){
 
         <div>
             {
-                showInputSection == false ? ' ' :
+                showInputSection === false ? ' ' :
 
                 <>
                     <h2>Mini Reconciliation Tool</h2>
@@ -106,21 +106,21 @@ function Dashboard(){
 
                     <div>
                         {
-                            internalFileData.length == 0 ? ' ' :
+                            internalFileData.length === 0 ? ' ' :
                             <Table data={internalFileData} title={"Internal System Export File"} download={false}/>
                         }
                     </div>
                    
                     <div>
                             {
-                                providerFileData.length == 0 ? ' ' :
+                                providerFileData.length === 0 ? ' ' :
                                 <Table data={providerFileData} title={"Provider Statement File"} download={false}/>
                             }
                     </div>
                     
 
                     {
-                        internalFileData.length == 0 || providerFileData.length == 0 ? '' :
+                        internalFileData.length === 0 || providerFileData.length === 0 ? '' :
                         <div style={{textAlign:"center"}}>
                             <button onClick={reconcileTransactions} className="reconcile">
                                 Reconcile Transactions
@@ -133,7 +133,7 @@ function Dashboard(){
             }
             
             {
-                showResultsTable == true && (
+                showResultsTable === true && (
                 matchedTransactions.length > 0 ||
                 internalOnlyTransactions.length > 0 ||
                 providerOnlyTransactions.length > 0) ?
