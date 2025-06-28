@@ -3,12 +3,18 @@ import { useTheme } from "@table-library/react-table-library/theme";
 import { getTheme } from "@table-library/react-table-library/baseline";
 import { usePagination } from "@table-library/react-table-library/pagination";
 import { FaFileDownload } from "react-icons/fa";
+import { useState } from 'react';
 
 function Table({data,title,download}){
 
     const nodes = data;
+    const [search, setSearch] = useState("")
 
-    const tableData = {nodes}
+    const tableData = {
+        nodes: nodes.filter((item) =>
+            item.transaction_reference.toLowerCase().includes(search.toLowerCase())
+        ),
+    };
 
     const pagination = usePagination(tableData, {
         state: {
@@ -17,7 +23,11 @@ function Table({data,title,download}){
         },
     });
 
-     const theme = useTheme([
+    const handleSearch = (event) => {
+        setSearch(event.target.value);
+    };
+
+    const theme = useTheme([
         getTheme(),
         {
 
@@ -118,7 +128,16 @@ function Table({data,title,download}){
 
     return (
         <div className='table-area'>
-            <h4>{title} {download ? <FaFileDownload className="downloadIcon" onClick={handleDownloadCsv} title={"Download as CSV"} cursor={"pointer"}/> : ''}</h4>
+            <h4>
+                {title} 
+                {download ? <FaFileDownload className="downloadIcon" onClick={handleDownloadCsv} title={"Download as CSV"} cursor={"pointer"}/> : ''}
+            </h4>
+            <div style={{fontSize:"16px",padding:"5px",margin:"8px",textAlign:"center"}}>
+                <label htmlFor="search">
+                    Search by Transaction Reference:&nbsp;
+                    <input id="search" type="text" value={search} onChange={handleSearch}/>
+                </label>
+            </div>
             <CompactTable columns = {COLUMNS} data={tableData} theme={theme} pagination={pagination}/>
 
             <div style={{ display: "flex", justifyContent: "space-between" }}>
