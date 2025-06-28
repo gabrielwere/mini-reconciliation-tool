@@ -1,5 +1,5 @@
 import Table from "./Table"
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 function Results({matched,internalOnly,providerOnly}){
 
